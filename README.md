@@ -1,1 +1,1 @@
-PyML is a Reinforcement Learning project to create a trained model that can craft in Final Fantasy XIV: Online.
+PyML is a Reinforcement Learning project to train a model to craft in Final Fantasy XIV: Online.
