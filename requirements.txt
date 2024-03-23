@@ -16,6 +16,7 @@ fonttools==4.38.0
 google-auth==2.26.2
 google-auth-oauthlib==0.4.6
 grpcio==1.60.0
+gunicorn==21.2.0
 gymnasium==0.28.1
 idna==3.6
 importlib-metadata==6.7.0
@@ -59,6 +60,7 @@ tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
 tomli==2.0.1
 torch==1.13.1
+torch-tb-profiler==0.4.3
 tqdm==4.66.1
 typed-ast==1.5.5
 typing_extensions==4.7.1
