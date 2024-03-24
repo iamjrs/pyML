@@ -20,7 +20,7 @@ class Loader:
         self.geardb  = GearDatabase()
         self.modelName = 'ff14crafter'
 
-        self.env = make_vec_env(lambda: Environment(recipedb=self.recipedb, geardb=self.geardb), n_envs=len(ActionMapper._ACTIONS))
+        self.env = make_vec_env(lambda: Environment(recipedb=self.recipedb, geardb=self.geardb), n_envs=len(ActionMapper._ACTIONS), seed=1)
         self.model = MaskablePPO(MaskableActorCriticPolicy, self.env, n_steps=10000 // self.env.num_envs) # , learning_rate=1
 
         if os.path.exists(f'{self.modelName}.zip'):
