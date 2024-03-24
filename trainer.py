@@ -20,11 +20,16 @@ if __name__ == "__main__":
 
     rounds = 0
     while True:
-        trainer = Trainer()
-        os.system('cls')
-        print(rounds)
-        r = evaluate_policy(trainer.model, trainer.env, warn=False, n_eval_episodes=100, deterministic=True)
-        print(r)
-        trainer.run()
-        rounds += 1
-        del trainer
+        try:
+            trainer = Trainer()
+            os.system('cls')
+            print(rounds)
+            r = evaluate_policy(trainer.model, trainer.env, warn=False, n_eval_episodes=100, deterministic=True)
+            print(r)
+            trainer.run()
+            rounds += 1
+            del trainer
+        except:
+            break
+
+    exit()
