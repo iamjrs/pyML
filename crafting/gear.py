@@ -32,9 +32,7 @@ class Gear:
 
 class GearDatabase:
 
-    def __init__(
-        self, dbPath: str = "C:\\Users\\jschm\\Documents\\pyML\\crafting\\geardb.json"
-    ) -> None:
+    def __init__(self, dbPath: str = "crafting/geardb.json") -> None:
 
         self.slots = {
             "Body": 4,

@@ -27,7 +27,10 @@ if __name__ == "__main__":
     while True:
         try:
             trainer = Trainer()
-            os.system("cls")
+            if os.name == "posix":
+                os.system("clear")
+            else:
+                os.system("cls")
             print(rounds)
             r = evaluate_policy(
                 trainer.model,

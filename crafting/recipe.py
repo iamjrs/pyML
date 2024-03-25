@@ -40,9 +40,7 @@ class RecipeSchema(Schema):
 
 
 class RecipeDatabase:
-    def __init__(
-        self, dbPath: str = "C:\\Users\\jschm\\Documents\\pyML\\crafting\\recipedb\\"
-    ) -> None:
+    def __init__(self, dbPath: str = "crafting/recipedb/") -> None:
 
         self.dbPath = dbPath
         self.db = {}
