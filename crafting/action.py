@@ -6,6 +6,7 @@ from crafting.state import State
 
 RNG_DIVISOR = 2
 
+
 class Action:
 
     name: str = "Action"
@@ -44,8 +45,8 @@ class Action:
 
     def _condition(self):
 
-        excellent_chance = .1 / RNG_DIVISOR
-        good_chance = .25 / RNG_DIVISOR
+        excellent_chance = 0.1 / RNG_DIVISOR
+        good_chance = 0.25 / RNG_DIVISOR
 
         if self.state.condition == POOR:
             self.state.condition = NORMAL
@@ -65,14 +66,14 @@ class Action:
 
     def _adjust_buffs(self):
         timedBuffs = [
-            'Waste Not',
-            'Veneration',
-            'Great Strides',
-            'Innovation',
-            'Final Appraisal',
-            'Waste Not II',
-            'Muscle Memory',
-            'Manipulation',
+            "Waste Not",
+            "Veneration",
+            "Great Strides",
+            "Innovation",
+            "Final Appraisal",
+            "Waste Not II",
+            "Muscle Memory",
+            "Manipulation",
         ]
         for buff in timedBuffs:
             if self.state.buffs[buff]:
@@ -86,10 +87,10 @@ class Action:
 
             if self.durability:
                 durabilityCost = self.durability
-                if self.state.buffs['Waste Not'] or self.state.buffs['Waste Not II']:
-                    durabilityCost *= .5
+                if self.state.buffs["Waste Not"] or self.state.buffs["Waste Not II"]:
+                    durabilityCost *= 0.5
                 self.state.durability -= durabilityCost
-                if self.state.buffs['Manipulation']:
+                if self.state.buffs["Manipulation"]:
                     self.state.durability += 5
 
             self._use()
@@ -122,15 +123,15 @@ class SynthesisAction(Action):
 
         if type(self) == BasicSynthesis:
             if self.player.level >= 31:
-                efficiencyMod += .2
+                efficiencyMod += 0.2
 
-        if self.state.buffs['Veneration']:
+        if self.state.buffs["Veneration"]:
             if multiplier:
-                multiplier += .5
+                multiplier += 0.5
             else:
                 multiplier = 1.5
 
-        if self.state.buffs['Muscle Memory']:
+        if self.state.buffs["Muscle Memory"]:
             if multiplier:
                 multiplier += 1
             else:
@@ -143,8 +144,8 @@ class SynthesisAction(Action):
 
     @staticmethod
     def _calculate(self):
-        progress = ( self.player.craftsmanship * 10 ) / self.recipe.progressDivider + 2
-        if (self.player.level <= self.recipe.baseLevel):
+        progress = (self.player.craftsmanship * 10) / self.recipe.progressDivider + 2
+        if self.player.level <= self.recipe.baseLevel:
             progress = (progress * (self.recipe.progressModifier | 100)) / 100
         self.progress = int(progress)
         return self.progress
@@ -156,12 +157,12 @@ class SynthesisAction(Action):
             progress = self.progress * self.efficiency * efficiencyMod
             self.state.progress += int(progress)
 
-            if self.state.buffs['Final Appraisal']:
+            if self.state.buffs["Final Appraisal"]:
                 if self.state.progress == self.recipe.difficulty:
                     self.state.progress -= 1
-                    self.state.buffs['Final Appraisal'] = 0
+                    self.state.buffs["Final Appraisal"] = 0
 
-            self.state.buffs['Muscle Memory'] = 0
+            self.state.buffs["Muscle Memory"] = 0
         return self.state
 
     def _use(self):
@@ -180,9 +181,7 @@ class TouchAction(Action):
         super().__init__(state)
         self.efficiencyMod = self.get_efficiency(self)
         self._calculate(self)
-        self.conditions.append(
-            self.state.quality < self.recipe.maxQuality
-        )
+        self.conditions.append(self.state.quality < self.recipe.maxQuality)
 
     @staticmethod
     def get_efficiency(self, multiplier: int = 0):
@@ -190,18 +189,18 @@ class TouchAction(Action):
         efficiencyMod = 1
         multiplier = 0
 
-        if self.state.buffs['Inner Quiet']:
-            efficiencyMod += .1 * self.state.buffs['Inner Quiet']
+        if self.state.buffs["Inner Quiet"]:
+            efficiencyMod += 0.1 * self.state.buffs["Inner Quiet"]
 
-        if self.state.buffs['Great Strides']:
+        if self.state.buffs["Great Strides"]:
             if multiplier:
                 multiplier += 1
             else:
                 multiplier = 2
 
-        if self.state.buffs['Innovation']:
+        if self.state.buffs["Innovation"]:
             if multiplier:
-                multiplier += .5
+                multiplier += 0.5
             else:
                 multiplier = 1.5
 
@@ -213,8 +212,8 @@ class TouchAction(Action):
 
     @staticmethod
     def _calculate(self):
-        quality = ( self.player.control * 10 ) / self.recipe.qualityDivider + 35
-        if (self.player.level <= self.recipe.baseLevel):
+        quality = (self.player.control * 10) / self.recipe.qualityDivider + 35
+        if self.player.level <= self.recipe.baseLevel:
             quality = (quality * (self.recipe.qualityModifier | 100)) / 100
         self.quality = int(quality)
         return self.quality
@@ -227,16 +226,15 @@ class TouchAction(Action):
             self.state.quality += int(quality)
 
             if self.player.level >= 11:
-                if self.state.buffs['Inner Quiet'] < self.innerQuietMax:
-                    self.state.buffs['Inner Quiet'] += 1
+                if self.state.buffs["Inner Quiet"] < self.innerQuietMax:
+                    self.state.buffs["Inner Quiet"] += 1
 
-            self.state.buffs['Great Strides'] = 0
+            self.state.buffs["Great Strides"] = 0
         return self.state
-    
+
     def _use(self):
         self._use_action(self, self.efficiencyMod)
         return self.state
-
 
 
 class BasicSynthesis(SynthesisAction):
@@ -269,7 +267,7 @@ class HastyTouch(TouchAction):
     level: int = 9
     cp: int = 0
     efficiency: float = 1
-    successRate: float = .6 / RNG_DIVISOR
+    successRate: float = 0.6 / RNG_DIVISOR
 
     # def __init__(self, state: State = None) -> None:
     #     super().__init__(state)
@@ -285,7 +283,7 @@ class RapidSynthesis(SynthesisAction):
     level: int = 9
     cp: int = 0
     efficiency: float = 2.5
-    successRate: float = .5 / RNG_DIVISOR
+    successRate: float = 0.5 / RNG_DIVISOR
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
@@ -305,6 +303,7 @@ class Observe(Action):
     #         self.state.condition == POOR
     #     )
 
+
 class TricksOfTheTrade(Action):
     name: str = "Tricks of the Trade"
     level: int = 13
@@ -313,9 +312,7 @@ class TricksOfTheTrade(Action):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.append(
-            self.state.condition in [GOOD, EXCELLENT]
-        )
+        self.conditions.append(self.state.condition in [GOOD, EXCELLENT])
 
     def _use(self):
         self.player.cp += 20
@@ -329,8 +326,8 @@ class WasteNot(Action):
     durability: int = 0
 
     def _use(self):
-        self.state.buffs['Waste Not'] = 5
-        self.state.buffs['Waste Not II'] = 0
+        self.state.buffs["Waste Not"] = 5
+        self.state.buffs["Waste Not II"] = 0
         return self.state
 
 
@@ -341,9 +338,9 @@ class Veneration(Action):
     durability: int = 0
 
     def _use(self):
-        self.state.buffs['Veneration'] = 5
+        self.state.buffs["Veneration"] = 5
         return self.state
-    
+
 
 class StandardTouch(TouchAction):
     name: str = "Standard Touch"
@@ -364,12 +361,10 @@ class GreatStrides(Action):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.append(
-            self.state.quality < self.recipe.maxQuality
-        )
+        self.conditions.append(self.state.quality < self.recipe.maxQuality)
 
     def _use(self):
-        self.state.buffs['Great Strides'] = 4
+        self.state.buffs["Great Strides"] = 4
         return self.state
 
 
@@ -378,15 +373,13 @@ class Innovation(Action):
     level: int = 26
     cp: int = 18
     durability: int = 0
- 
+
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.append(
-            self.state.quality < self.recipe.maxQuality
-        )
+        self.conditions.append(self.state.quality < self.recipe.maxQuality)
 
     def _use(self):
-        self.state.buffs['Innovation'] = 5
+        self.state.buffs["Innovation"] = 5
 
 
 class FinalAppraisal(Action):
@@ -400,7 +393,7 @@ class FinalAppraisal(Action):
     #     self.conditions.append(False)
 
     def _use(self):
-        self.state.buffs['Final Appraisal'] = 5
+        self.state.buffs["Final Appraisal"] = 5
         return self.state
 
 
@@ -411,8 +404,8 @@ class WasteNotII(Action):
     durability: int = 0
 
     def _use(self):
-        self.state.buffs['Waste Not II'] = 9
-        self.state.buffs['Waste Not'] = 0
+        self.state.buffs["Waste Not II"] = 9
+        self.state.buffs["Waste Not"] = 0
         return self.state
 
 
@@ -424,25 +417,23 @@ class ByregotsBlessing(TouchAction):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.append(
-            self.state.buffs['Inner Quiet'] > 0
-        )
+        self.conditions.append(self.state.buffs["Inner Quiet"] > 0)
         self.efficiencyMod = 1
         multiplier = 0
-        self.efficiency += .2 * self.state.buffs['Inner Quiet']
-        
-        if self.state.buffs['Inner Quiet']:
-            self.efficiencyMod += .1 * self.state.buffs['Inner Quiet']
+        self.efficiency += 0.2 * self.state.buffs["Inner Quiet"]
 
-        if self.state.buffs['Great Strides']:
+        if self.state.buffs["Inner Quiet"]:
+            self.efficiencyMod += 0.1 * self.state.buffs["Inner Quiet"]
+
+        if self.state.buffs["Great Strides"]:
             if multiplier:
                 multiplier += 1
             else:
                 multiplier = 2
 
-        if self.state.buffs['Innovation']:
+        if self.state.buffs["Innovation"]:
             if multiplier:
-                multiplier += .5
+                multiplier += 0.5
             else:
                 multiplier = 1.5
 
@@ -456,7 +447,7 @@ class ByregotsBlessing(TouchAction):
         if val <= self.successRate:
             quality = self.quality * self.efficiency * self.efficiencyMod
             self.state.quality += int(quality)
-            self.state.buffs['Great Strides'] = 0
+            self.state.buffs["Great Strides"] = 0
             self.state.buffs["Inner Quiet"] = 0
         return self.state
 
@@ -469,10 +460,7 @@ class PreciseTouch(TouchAction):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.append(
-            self.state.condition in [GOOD, EXCELLENT]
-        )
-
+        self.conditions.append(self.state.condition in [GOOD, EXCELLENT])
 
 
 class MuscleMemory(SynthesisAction):
@@ -483,22 +471,20 @@ class MuscleMemory(SynthesisAction):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.append(
-            self.state.step == 1
-        )
+        self.conditions.append(self.state.step == 1)
 
     def _use(self):
         val = random()
         if val <= self.successRate:
             progress = self.progress * self.efficiency * self.efficiencyMod
             self.state.progress += int(progress)
-            
-            if self.state.buffs['Final Appraisal']:
+
+            if self.state.buffs["Final Appraisal"]:
                 if self.state.progress == self.recipe.difficulty:
                     self.state.progress -= 1
-                    self.state.buffs['Final Appraisal'] = 0
+                    self.state.buffs["Final Appraisal"] = 0
 
-            self.state.buffs['Muscle Memory'] = 6
+            self.state.buffs["Muscle Memory"] = 6
         return self.state
 
 
@@ -521,7 +507,7 @@ class Manipulation(Action):
     durability: int = 0
 
     def _use(self):
-        self.state.buffs['Manipulation'] = 9
+        self.state.buffs["Manipulation"] = 9
         return self.state
 
 
@@ -534,10 +520,9 @@ class PrudentTouch(TouchAction):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.extend([
-            self.state.buffs['Waste Not'] == 0,
-            self.state.buffs['Waste Not II'] == 0
-        ])
+        self.conditions.extend(
+            [self.state.buffs["Waste Not"] == 0, self.state.buffs["Waste Not II"] == 0]
+        )
 
 
 class FocusedSynthesis(SynthesisAction):
@@ -545,7 +530,7 @@ class FocusedSynthesis(SynthesisAction):
     level: int = 67
     cp: int = 5
     efficiency: float = 2
-    successRate: float = .5 / RNG_DIVISOR
+    successRate: float = 0.5 / RNG_DIVISOR
     comboAction = Observe
 
     # def __init__(self, state: State = None) -> None:
@@ -563,7 +548,7 @@ class FocusedTouch(TouchAction):
     level: int = 68
     cp: int = 18
     efficiency: float = 1.5
-    successRate: float = .5 / RNG_DIVISOR
+    successRate: float = 0.5 / RNG_DIVISOR
     comboAction = Observe
 
     # def __init__(self, state: State = None) -> None:
@@ -584,9 +569,7 @@ class Reflect(TouchAction):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.append(
-            self.state.step == 1
-        )
+        self.conditions.append(self.state.step == 1)
 
 
 class PreparatoryTouch(TouchAction):
@@ -611,7 +594,7 @@ class Groundwork(SynthesisAction):
             self.efficiency = 3.6
 
         if self.state.durability < self.durability:
-            self.efficiency *= .5
+            self.efficiency *= 0.5
 
 
 class DelicateSynthesis(Action):
@@ -643,9 +626,7 @@ class IntensiveSynthesis(SynthesisAction):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.append(
-            self.state.condition in [GOOD, EXCELLENT]
-        )
+        self.conditions.append(self.state.condition in [GOOD, EXCELLENT])
 
 
 class TrainedEye(Action):
@@ -657,10 +638,9 @@ class TrainedEye(Action):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.extend([
-            self.state.step == 1,
-            self.recipe.baseLevel <= self.player.level - 10
-        ])
+        self.conditions.extend(
+            [self.state.step == 1, self.recipe.baseLevel <= self.player.level - 10]
+        )
 
     def _use(self):
         self.state.quality = self.recipe.maxQuality
@@ -687,10 +667,9 @@ class PrudentSynthesis(SynthesisAction):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.extend([
-            self.state.buffs['Waste Not'] == 0,
-            self.state.buffs['Waste Not II'] == 0
-        ])
+        self.conditions.extend(
+            [self.state.buffs["Waste Not"] == 0, self.state.buffs["Waste Not II"] == 0]
+        )
 
 
 class TrainedFinesse(TouchAction):
@@ -702,9 +681,7 @@ class TrainedFinesse(TouchAction):
 
     def __init__(self, state: State = None) -> None:
         super().__init__(state)
-        self.conditions.append(
-            self.state.buffs['Inner Quiet'] == 10
-        )
+        self.conditions.append(self.state.buffs["Inner Quiet"] == 10)
 
 
 QualityActions = [
@@ -766,7 +743,7 @@ class ActionMapper:
     def get(self, actionVal: np.array = None):
         _ACTIONS = [x for x in self._ACTIONS if x(self.state).canUse()]
         actionVal = actionVal[0]
-        actionIndex = round( actionVal * ( len(_ACTIONS) - 1 ) )
+        actionIndex = round(actionVal * (len(_ACTIONS) - 1))
         action = _ACTIONS[actionIndex]
         return action
 

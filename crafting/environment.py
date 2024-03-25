@@ -13,7 +13,12 @@ from copy import copy
 
 class Environment(gym.Env):
 
-    def __init__(self, state: State = None, recipedb: RecipeDatabase = None, geardb: GearDatabase = None):
+    def __init__(
+        self,
+        state: State = None,
+        recipedb: RecipeDatabase = None,
+        geardb: GearDatabase = None,
+    ):
         super().__init__()
 
         self.init_state = None
@@ -41,17 +46,18 @@ class Environment(gym.Env):
 
         obs = Observation(self.state).normalize()
         self.action_space = spaces.Discrete(len(ActionMapper._ACTIONS))
-        self.observation_space = spaces.Box(low=-1, high=1, shape=(len(obs),), dtype=np.float64)
-
+        self.observation_space = spaces.Box(
+            low=-1, high=1, shape=(len(obs),), dtype=np.float64
+        )
 
     def step(self, action):
 
         assert self.action_space.contains(action), action
 
-        reward      = 0
-        terminated  = False
-        truncated   = False
-        info        = {}
+        reward = 0
+        terminated = False
+        truncated = False
+        info = {}
 
         ActionClass = ActionMapper._ACTIONS[action]
         Action = ActionClass(self.state)
@@ -69,7 +75,6 @@ class Environment(gym.Env):
 
         return obs, reward, terminated, truncated, info
 
-
     def reset(self, seed=None, options=None):
 
         if self.init_state:
@@ -85,7 +90,6 @@ class Environment(gym.Env):
         self.state = State(self.player, self.recipe)
         obs = Observation(self.state).normalize()
         return obs, {}
-
 
     def action_masks(self, env: gym.Env = None):
         if not env:

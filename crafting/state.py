@@ -8,19 +8,10 @@ GOOD = 2
 EXCELLENT = 3
 POOR = 4
 
-CONDITIONS = {
-    NORMAL: 1, 
-    GOOD: 1.5, 
-    EXCELLENT: 4,
-    POOR: 0.25
-}
+CONDITIONS = {NORMAL: 1, GOOD: 1.5, EXCELLENT: 4, POOR: 0.25}
 
-UNCONDITIONS = {
-    NORMAL: 'NORMAL', 
-    GOOD: 'GOOD', 
-    EXCELLENT: 'EXCELLENT',
-    POOR: 'POOR'
-}
+UNCONDITIONS = {NORMAL: "NORMAL", GOOD: "GOOD", EXCELLENT: "EXCELLENT", POOR: "POOR"}
+
 
 class State:
 
@@ -51,26 +42,26 @@ class State:
         self.history = [None]
 
         buffNames = [
-            'Inner Quiet',
-            'Waste Not',
-            'Veneration',
-            'Great Strides',
-            'Innovation',
-            'Final Appraisal',
-            'Waste Not II',
-            'Muscle Memory',
-            'Manipulation',
+            "Inner Quiet",
+            "Waste Not",
+            "Veneration",
+            "Great Strides",
+            "Innovation",
+            "Final Appraisal",
+            "Waste Not II",
+            "Muscle Memory",
+            "Manipulation",
         ]
 
         if not buffs:
             buffs = [0] * len(buffNames)
 
-        self.buffs = dict( zip(buffNames, buffs) )
-
+        self.buffs = dict(zip(buffNames, buffs))
 
     @property
     def progress(self):
         return self._progress
+
     @progress.setter
     def progress(self, value):
         value = max([value, 0])
@@ -81,6 +72,7 @@ class State:
     @property
     def quality(self):
         return self._quality
+
     @quality.setter
     def quality(self, value):
         value = max([value, 0])
@@ -91,6 +83,7 @@ class State:
     @property
     def durability(self):
         return self._durability
+
     @durability.setter
     def durability(self, value):
         value = max([value, 0])
@@ -98,9 +91,8 @@ class State:
         self._durability = value
         return self._durability
 
-
     def __repr__(self) -> str:
-        s = f'''[{self.recipe.name} Lv. {self.recipe.baseLevel} ({self.recipe.level})]
+        s = f"""[{self.recipe.name} Lv. {self.recipe.baseLevel} ({self.recipe.level})]
 Step:         {str(self.step)}
 Progress:     {str(self.progress)} / {str(self.recipe.difficulty)}
 Quality:      {str(self.quality)} / {str(self.recipe.maxQuality)}
@@ -108,10 +100,10 @@ Durability:   {str(self.durability)} / {str(self.recipe.durability)}
 CP:           {str(self.player.cp)}
 Condition:    {UNCONDITIONS[self.condition]}
 Buffs:
-'''
+"""
         for buff in self.buffs:
             if self.buffs[buff]:
-                s += f'- {buff}: {str(self.buffs[buff])}\n'
+                s += f"- {buff}: {str(self.buffs[buff])}\n"
 
         return s
 

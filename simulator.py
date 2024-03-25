@@ -12,7 +12,6 @@ from sb3_contrib.common.wrappers import ActionMasker
 import os
 
 
-
 class Simulator:
 
     def __init__(self, modelPath: str = "ff14crafter.zip") -> None:
@@ -31,25 +30,24 @@ class Simulator:
             self.model = MaskablePPO(MaskableActorCriticPolicy, self.env)
         return True
 
-
     def _predict(self):
         masks = ActionMapper(self.state).get_mask()
         _index = masks[ActionMapper._ACTIONS.index(Manipulation)]
         masks[_index] = masks[_index] & self.hasManipulation
         obs = Observation(self.state).normalize()
-        action, _states = self.model.predict(observation=obs, action_masks=masks, deterministic=True)
+        action, _states = self.model.predict(
+            observation=obs, action_masks=masks, deterministic=True
+        )
         result = ActionMapper._ACTIONS[action]
         return result
-
 
     def predict(self, player):
         self.get_state_from_player(player)
         return self._predict()
 
-
     def get_state_from_player(self, player):
 
-        if player.action('Manipulation').canUse():
+        if player.action("Manipulation").canUse():
             self.hasManipulation = True
         else:
             self.hasManipulation = False

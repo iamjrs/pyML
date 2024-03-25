@@ -14,6 +14,7 @@ class Player:
             setattr(self, stat, stats[stat])
         self.cp += 180
 
+
 class PlayerSchema(Schema):
     _base = Player
     level = range(1, 90)

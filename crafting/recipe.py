@@ -19,8 +19,8 @@ class Recipe:
     suggestedControl: int
     suggestedCraftsmanship: int
     stars: int = 0
-    category: str = 'Random'
-    name: str = 'Random'
+    category: str = "Random"
+    name: str = "Random"
 
 
 class RecipeSchema(Schema):
@@ -40,7 +40,9 @@ class RecipeSchema(Schema):
 
 
 class RecipeDatabase:
-    def __init__(self, dbPath: str = 'C:\\Users\\jschm\\Documents\\pyML\\crafting\\recipedb\\') -> None:
+    def __init__(
+        self, dbPath: str = "C:\\Users\\jschm\\Documents\\pyML\\crafting\\recipedb\\"
+    ) -> None:
 
         self.dbPath = dbPath
         self.db = {}
@@ -48,12 +50,12 @@ class RecipeDatabase:
 
     def _load(self):
         for file in listdir(self.dbPath):
-            with open(self.dbPath + file, 'r') as content:
-                category = file.split('.')[0]
+            with open(self.dbPath + file, "r") as content:
+                category = file.split(".")[0]
                 self.db[category] = []
                 recipes = json.loads(content.read())
                 for r in recipes:
-                    r['name'] = r['name']['en']
+                    r["name"] = r["name"]["en"]
                     r = Recipe(category=category, **r)
                     self.db[category].append(r)
 
@@ -69,9 +71,6 @@ class RecipeDatabase:
             category = random.choice(list(self.db.keys()))
         recipes = self.db[category]
         if level:
-            recipes = [r for r in recipes if r.baseLevel <= level+5]
+            recipes = [r for r in recipes if r.baseLevel <= level + 5]
         recipe = random.choice(recipes)
         return recipe
-
-
-

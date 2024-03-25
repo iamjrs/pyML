@@ -21,7 +21,8 @@
 		"vscode": {
 			"extensions": [
 				"ms-python.python",
-				"ms-python.black-formatter"
+				"ms-python.black-formatter",
+				"ms-azuretools.vscode-docker"
 			],
 			"settings": {
 				"editor.formatOnSave": true

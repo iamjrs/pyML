@@ -1,18 +1,19 @@
 from random import choice
 
+
 class Schema:
     _base = object
 
     @classmethod
     def sample(self):
-        attrs = [attr for attr in vars(self) if attr[0] != '_']
+        attrs = [attr for attr in vars(self) if attr[0] != "_"]
         initvars = {}
         for attr in attrs:
-            val = choice( list( getattr(self, attr) ) )
+            val = choice(list(getattr(self, attr)))
 
-            if attr == 'cp':
+            if attr == "cp":
                 val = max([180, val])
-            
+
             initvars[attr] = val
         c = self._base(**initvars)
         return c
