@@ -5,14 +5,9 @@ from crafting.action import *
 from crafting.observation import Observation
 
 
-player = Player(
-    level=65,
-    craftsmanship=1000,
-    control=1000,
-    cp=350
-)
+player = Player(level=65, craftsmanship=1000, control=1000, cp=350)
 
-recipe = RecipeDatabase().get('Steppe Serge')
+recipe = RecipeDatabase().get("Steppe Serge")
 
 actions = [
     CarefulSynthesis,
